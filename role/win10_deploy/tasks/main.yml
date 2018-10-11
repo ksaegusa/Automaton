@@ -2,8 +2,9 @@
 - name: Deploy Windows10 VM
   vmware_guest:
     hostname: "{{ esxi_host }}"
-    username: 
-    password: 
+    username: "{{ user }}"
+    password: "{{ password }}"
+    datacentoer: Datacenter
     validate_certs: False
     folder: /hogehoge
     name: "{{ vm_name }}"
@@ -13,7 +14,7 @@
     disk:
      - size_gb: "{{ vm_disk }}"
        type: thin
-       datastore: "{{ vm_storage }}"
+       datastore: datastore3
     hardware:
       memory_mb: "{{ vm_memory }}"
       num_cpu_cores_per_socket: "{{ vm_cpu }}"
@@ -23,7 +24,7 @@
      - name: VM Network
        ip: "{{ vm_ip }}"
        netmask: 255.255.255.0
-       gateway: 
+       gateway: 192.168.79.254
     wait_for_ip_address: yes
 
     customization:
