@@ -1,0 +1,36 @@
+---
+- name: Deploy Windows VM
+  vmware_guest:
+    hostname: "{{ vcenter_ip }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: False
+    folder: /hogehoge
+    name: "{{ vm_name }}"
+    state: poweredon
+    template: "{{ template }}"
+    disk:
+    - size_gb: "{{ disk_size }}"
+      type: thin
+      datastore: "{{ datestore }}"
+    hardware:
+      memory_mb: "{{ memory_size }}"
+      num_cpus: "{{ cpu_num }}"
+      num_cpu_cores_per_socket: 1
+      scsi: paravirtual
+    networks:
+    - name: VM Network
+      ip: "{{ ip }}"
+      netmask: "{{ mask }}"
+      gateway: "{{ gateway }}"
+    wait_for_ip_address: yes
+
+    customization:
+      autologon: yes
+      password: root
+      runonce:
+      - powershell.exe -ExecutionPolicy Unrestricted -File C:\Windows\Temp\ConfigureRemotingForAnsible.ps1 -ForceNewSSLCert -EnableCredSSP
+      when: os == "windows"
+
+  delegate_to: localhost
+  register: deploy

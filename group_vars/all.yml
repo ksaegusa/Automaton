@@ -1,0 +1,9 @@
+---
+esxi_host: Datecenter
+vm_name: new_vm
+vm_ip: 
+vm_cpu:
+vm_memory:
+vm_storage:
+vm_nic:
+vm_mid:
